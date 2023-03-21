@@ -1,20 +1,27 @@
+//  ----- PLACA TTGO TBEAM ----- 
+
+// API KEY GATEWAY -> NNSXS.WT2M3YJ3IKWR73VYQME6J7VVG5VCWZ44C5YBZQQ.7EGVY3A3M4DTJKSVL2AO5NG2RZTEBMY7DYQIT7A7GVL242HPBC7Q
+
 #include <Arduino.h>
 #include <lmic.h>
 #include <hal/hal.h>
 #include <SPI.h>
-//#include <SSD1306.h>
+//#include <SSD1306.h>*/
 
 
 // --- Definicoes De Pinos ---
 #define     PIN_STATUS      36 //DIO-1
 #define     PIN_CONT        37 //DIO-2
-#define     SDA             4
-#define     SCL             15
+//#define     SDA             4
+//#define     SCL             15
 #define     Reset           16
 #define     Adress          0x03
 #define     flag            2
+#define     Lora_SCK        5
+#define     Lora_MISO       19
+#define     Lora_MOSI       27
 #define     Lora_SS         18
-#define     Lora_Reset      14
+#define     Lora_Reset      23
 #define     Lora_DIO0       26
 #define     Lora_DIO1       33
 #define     Lora_DIO2       32
@@ -150,7 +157,7 @@ void setup()
     LMIC_setLinkCheckMode(0);
     LMIC.dn2Dr = DR_SF9;
     //Set data rate and transmit power (note: txpow seems to be ignored by the library)
-    LMIC_setDrTxpow(DR_SF7,14);
+    LMIC_setDrTxpow(DR_SF10,14);
     do_send(&sendjob);
 }
 
@@ -167,3 +174,49 @@ void loop()
 
     os_runloop_once();
 }
+/*
+#include <Arduino.h>
+#include <SPI.h>
+#include <LoRa.h>
+#include <time.h>
+
+int counter = 0;
+
+void Envia_Lora()
+{
+
+  // send packet
+  LoRa.beginPacket();
+  LoRa.print("hello");
+  LoRa.print(counter);
+  LoRa.endPacket();
+  
+
+}
+
+
+
+
+void setup() {
+  Serial.begin(9600);
+  LoRa.setPins(Lora_SS,Lora_Reset,Lora_DIO0);
+  LoRa.begin(915E6);
+  Serial.println("LoRa Sender Iniciado."); 
+  pinMode(flag,OUTPUT);
+  digitalWrite(flag,LOW);
+
+}
+
+void loop() 
+{
+
+  Serial.print("Sending packet: ");
+  Serial.print(counter);
+  Envia_Lora();
+  Serial.println(" Pacote enviado.");
+
+  counter++;
+
+  delay(4000);
+ 
+}*/
