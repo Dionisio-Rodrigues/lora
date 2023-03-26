@@ -229,6 +229,9 @@
  C:/Users/hygor/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/mbedtls/port/include/aes/esp_aes.h \
  C:/Users/hygor/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/hal/include/hal/aes_types.h \
  C:/Users/hygor/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/mbedtls/mbedtls/include/mbedtls/error.h \
- .pio/libdeps/ttgo-t-beam/Arduino_JSON/src/Arduino_JSON.h \
- .pio/libdeps/ttgo-t-beam/Arduino_JSON/src/JSON.h \
- .pio/libdeps/ttgo-t-beam/Arduino_JSON/src/JSONVar.h
+ .pio/libdeps/ttgo-t-beam/ArduinoJson/src/ArduinoJSON.h \
+ .pio/libdeps/ttgo-t-beam/ArduinoJson/src/ArduinoJson.hpp \
+ .pio/libdeps/ttgo-t-beam/ArduinoJson/src/ArduinoJson/Configuration.hpp \
+ C:/Users/hygor/.platformio/packages/framework-arduinoespressif32/libraries/SPIFFS/src/SPIFFS.h \
+ C:/Users/hygor/.platformio/packages/framework-arduinoespressif32/libraries/FS/src/FS.h \
+ .pio/libdeps/ttgo-t-beam/Time/TimeLib.h
