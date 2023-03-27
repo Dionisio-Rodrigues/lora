@@ -22,7 +22,8 @@ Modelo:
 #include <HTTPClient.h>
 #include <ArduinoJSON.h>
 #include <SPIFFS.h>
-#include <TimeLib.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 
 #define SSID       "Talita 2.4G"
 #define password   "91272520"
@@ -30,6 +31,7 @@ Modelo:
 #define API_GET    "http://52.201.215.36:5000/getIST"
 #define DI0         10
 #define DI1         11
+#define flag        14
 
 // ---- Variaveis Globais ----
 
@@ -37,33 +39,61 @@ long int aux_time           = 0;
 long int Time_envio         = 10000;
 String                      mac_device;
 boolean                     Sinal;
-String                      data;
 String                      Pacote_Json;
-DynamicJsonDocument         jsonConfig(1024);
+
 
 // ---- Instancias de Lib's ----
 
-WiFiClient client;
-HTTPClient http;
+WiFiClient                  client;
+HTTPClient                  http;
+DynamicJsonDocument         jsonConfig(1024);
+WiFiUDP                     ntpUDP;
+NTPClient                   TimeClient(ntpUDP);
 
 // ---- Funções ----
 
+void Timer_Init()
+{
+  TimeClient.begin(); //Inicia cliente NTP/udp
+  TimeClient.setTimeOffset(-3*3600); //Fuso-horário local
+  TimeClient.forceUpdate(); //Atualiza data e hora
+}
+
+String FormatDate_Time(String valor) 
+{ 
+//Formato desejado: 2023-03-22 12:40:00, como chega: 2023-03-26T02:52:43Z
+
+  String strFormatted = valor.substring(0, valor.indexOf("T")) + " " + valor.substring(valor.indexOf("T") + 1, valor.indexOf("Z"));
+  return strFormatted;
+}
+
 void Config_pacote(int Pino_Leitura)
 { 
+  String aux;
 
-  
+  if (Pino_Leitura == DI0)
+  {
+    aux = "DI0";
+  }
+  else if (Pino_Leitura == DI1)
+  {
+    aux = "DI1";
+  }
 
+  String date_time = FormatDate_Time(TimeClient.getFormattedDate());
 
   jsonConfig  ["mac"]           = mac_device;
-  jsonConfig  ["identificador"] = Pino_Leitura;
+  jsonConfig  ["identificador"] = aux;
   jsonConfig  ["valor"]         = String(digitalRead(DI0));
-  jsonConfig  ["data"]          = data; 
+  jsonConfig  ["data"]          = date_time; 
 
   serializeJson(jsonConfig,Pacote_Json);
 }
 
 void Wifi_init()
 {
+  pinMode(flag,OUTPUT);
+
   WiFi.begin(SSID,password);
   
   Serial.println("Conectando");
@@ -72,6 +102,7 @@ void Wifi_init()
   {
     delay(500);
     Serial.print(".");
+    digitalWrite(flag,!digitalRead(flag));
   }
 
   Serial.println("");
@@ -82,6 +113,7 @@ void Wifi_init()
   Serial.print("Mac do Dispositivo: ");
   Serial.println(WiFi.macAddress());
   mac_device = WiFi.macAddress();
+  digitalWrite(flag,HIGH);
 
   
 }
@@ -112,10 +144,12 @@ void Enviar_dado()
 void setup() 
 {
   Serial.begin(9600);
+
   Serial.println("");
   Serial.println("Sistema iniciado.");
   
   Wifi_init();
+  Timer_Init();
   
   
 
@@ -124,8 +158,9 @@ void setup()
 void loop() 
 {
   Config_pacote(DI0);
-  Enviar_dado();
+  Serial.println(Pacote_Json);
+  //Enviar_dado();
   delay(20000);
-   
+
 
 }

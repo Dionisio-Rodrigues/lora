@@ -234,4 +234,5 @@
  .pio/libdeps/ttgo-t-beam/ArduinoJson/src/ArduinoJson/Configuration.hpp \
  C:/Users/hygor/.platformio/packages/framework-arduinoespressif32/libraries/SPIFFS/src/SPIFFS.h \
  C:/Users/hygor/.platformio/packages/framework-arduinoespressif32/libraries/FS/src/FS.h \
- .pio/libdeps/ttgo-t-beam/Time/TimeLib.h
+ .pio/libdeps/ttgo-t-beam/NTPClient/NTPClient.h \
+ C:/Users/hygor/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src/WiFiUdp.h
